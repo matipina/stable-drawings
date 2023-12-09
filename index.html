@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Sketch</title>
+
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="container" id="main">
+      <h1 class="lead">Air Paintings</h1>
+      {% if url %}
+        <script>
+            var url = '{{ url }}';
+        </script>
+    {% endif %}
+      <div>
+        <script src="static/sketch.js"></script>
+        <video class="input_video"></video>
+        <script src="static/hand_track.js"></script>
+      </div>
+
+      <div class="row" id="canvas"></div>
+      <div class="row" id="ui"></div>
+      <div class="row" id="ui-2"></div>
+
+    </div>
+    <div class="container">
+      <div class="row" id="result">
+        <img src="" alt="result-image" class="img-fluid" id="filetag" />
+      </div>
+    </div>
+  </body>
+</html>
