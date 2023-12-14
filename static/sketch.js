@@ -7,12 +7,10 @@
         add a sensibility setting, so a pixel is painted only after a few seconds of keeping the index there
         add a 'move pixels' option, where you can paint/select a bunch of pixels and then move the selection around
 
-4?. Add implementation of finder threads/bungee gum (p.drawLines([4, 8]);)
-5. Take photo and then allow to paint over it
-6. Add interactivity mode where pixels fall?/do something
-7. Add textures (watercolor)
-8. Add paint bucket
-9. Add mode that doesn't have margins in between pixels
+4. Take photo and then allow to paint over it
+5. Add interactivity mode where pixels fall?/do something
+6. Add paint bucket
+7. Add mode that doesn't have margins in between pixels
 */
 
 let canvas;
