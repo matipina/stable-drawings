@@ -4,13 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Sketch</title>
+    <title>Imaginair</title>
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
-
+    <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
@@ -30,29 +26,38 @@
     ></script>
   </head>
 
-  <body>
-    <div class="container" id="main">
-      <h1 class="lead">Air Paintings</h1>
+  <body class="container full-height-grow">
+    <header class="main-header">
+      <h1 class="title">Imaginair</h1>
+
       {% if url %}
-        <script>
-            var url = '{{ url }}';
-        </script>
-    {% endif %}
-      <div>
-        <script src="../static/sketch.js"></script>
-        <video class="input_video"></video>
-        <script src="../static/hand_track.js"></script>
+      <script>
+        var url = "{{ url }}";
+      </script>
+      {% endif %}
+
+    </header>
+    <section class="home-main-section">
+      <div class="instructions">
+        <h2 class="subtitle">Instructions</h2>
+        <span>This is something that goes here</span>
       </div>
 
-      <div class="row" id="canvas"></div>
-      <div class="row" id="ui"></div>
-      <div class="row" id="ui-2"></div>
+      <div id="main">
+        <div>
+          <script src="../static/sketch.js"></script>
+          <video class="input_video"></video>
+          <script src="../static/hand_track.js"></script>
+        </div>
 
-    </div>
-    <div class="container">
-      <div class="row" id="result">
-        <img src="" alt="result-image" class="img-fluid" id="filetag" />
+        <div class="row" id="canvas"></div>
+        <div class="row" id="ui"></div>
+
+        <div id="result">
+          <img src="" alt="result-image" class="img-fluid" id="filetag" />
+        </div>
       </div>
-    </div>
+      <div id="ui-2"></div>
+    </section>
   </body>
 </html>

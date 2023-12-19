@@ -22,7 +22,7 @@ var shapeButton;
 let colorPicker;
 var paint;
 
-var vScale = 18;
+var vScale = 12;
 var shape = 0;
 var nShapes = 1;
 var nModes = 2;
@@ -132,19 +132,16 @@ let sketch = function (p) {
     p.saveButton.parent(uiContainer);
 
     p.handsButton = p.createButton("Show hand").mousePressed(showHands);
-    p.handsButton.parent(uiContainer);
+    p.handsButton.parent(uiContainer2);
 
-    colorPicker = p.createColorPicker("#ed225d");
-    colorPicker.parent(uiContainer);
+    //p.drawButton = p.createButton("Draw").mousePressed(p.startDrawing);
+    //p.drawButton.parent(uiContainer);
 
-    p.drawButton = p.createButton("Draw").mousePressed(p.startDrawing);
-    p.drawButton.parent(uiContainer);
-
-    p.eraseButton = p.createButton("Eraser").mousePressed(p.startErasing);
-    p.eraseButton.parent(uiContainer);
+    //p.eraseButton = p.createButton("Eraser").mousePressed(p.startErasing);
+    //p.eraseButton.parent(uiContainer);
 
     p.cleanButton = p.createButton("Clean").mousePressed(p.erasePixels);
-    p.cleanButton.parent(uiContainer);
+    p.cleanButton.parent(uiContainer2);
 
     p.button = p.createButton("Mode", 0).mousePressed(changeMode);
     p.button.parent(uiContainer2);
@@ -154,6 +151,9 @@ let sketch = function (p) {
 
     thresholdSlider2 = p.createSlider(0, 255, 60, 1);
     thresholdSlider2.parent(uiContainer2);
+
+    colorPicker = p.createColorPicker("#F27B50");
+    colorPicker.parent(uiContainer2);
 
     p.painted_pixels = [];
     p.history = [];
