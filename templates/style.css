@@ -51,6 +51,14 @@ button:hover {
   background: #F2B872;
 }
 
+.main-button {
+  font-weight: 700;
+  width: 120px;
+  height: 40px;
+  color: #F2F2F2;
+  background: #F27B50;
+}
+
 .title {
   font-weight: 700;
   font-size: 3rem;
@@ -77,3 +85,9 @@ button:hover {
   align-items: stretch;
   justify-content: left;
 }
+
+.prompt {
+  width: auto;
+}
+
+

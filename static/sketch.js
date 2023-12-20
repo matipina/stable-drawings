@@ -105,15 +105,15 @@ let sketch = function (p) {
       var fileTag = document.getElementById("filetag");
       fileTag.style.display = 'block';
       fileTag.src = "data:image/png;base64," + resultData["img_data"];
-
     });
   };
 
   p.setup = function () {
     p.frameRate(60);
-    p.c = p.createCanvas(768, 540);
+    p.c = p.createCanvas(600, 420);
     let canvasContainer = document.getElementById("canvas");
     let uiContainer = document.getElementById("ui");
+    let submitButtonContainer = document.getElementById("submit-button")
     let uiContainer2 = document.getElementById("ui-2");
 
     p.c.parent(canvasContainer);
@@ -125,11 +125,12 @@ let sketch = function (p) {
     video.hide();
 
     p.promptInput = p.createInput("Describe your creation");
-    p.promptInput.size(300);
+    p.promptInput.addClass("prompt");
     p.promptInput.parent(uiContainer);
 
-    p.saveButton = p.createButton("Send").mousePressed(p.saveImage);
-    p.saveButton.parent(uiContainer);
+    p.saveButton = p.createButton("Submit").mousePressed(p.saveImage);
+    p.saveButton.parent(submitButtonContainer);
+    p.saveButton.addClass("home2-send-button");
 
     p.handsButton = p.createButton("Show hand").mousePressed(showHands);
     p.handsButton.parent(uiContainer2);

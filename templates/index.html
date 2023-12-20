@@ -1,12 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="english">
   <head>
-    <meta charset="utf-8" />
+    <title>exported project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
 
-    <title>Imaginair</title>
+    <style data-tag="reset-style-sheet">
+      html {
+        line-height: 1.15;
+      }
+      body {
+        margin: 0;
+      }
+      * {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+      }
+      p,
+      li,
+      ul,
+      pre,
+      div,
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6,
+      figure,
+      blockquote,
+      figcaption {
+        margin: 0;
+        padding: 0;
+      }
+      button {
+        background-color: transparent;
+      }
+      button,
+      input,
+      optgroup,
+      select,
+      textarea {
+        font-family: inherit;
+        font-size: 100%;
+        line-height: 1.15;
+        margin: 0;
+      }
+      button,
+      select {
+        text-transform: none;
+      }
+      button,
+      [type="button"],
+      [type="reset"],
+      [type="submit"] {
+        -webkit-appearance: button;
+      }
+      button::-moz-focus-inner,
+      [type="button"]::-moz-focus-inner,
+      [type="reset"]::-moz-focus-inner,
+      [type="submit"]::-moz-focus-inner {
+        border-style: none;
+        padding: 0;
+      }
+      button:-moz-focus,
+      [type="button"]:-moz-focus,
+      [type="reset"]:-moz-focus,
+      [type="submit"]:-moz-focus {
+        outline: 1px dotted ButtonText;
+      }
+      a {
+        color: inherit;
+        text-decoration: inherit;
+      }
+      input {
+        padding: 2px 4px;
+      }
+      img {
+        display: block;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 16px;
+      }
 
-    <link rel="stylesheet" href="style.css" />
+      body {
+        font-weight: 400;
+        font-style: normal;
+        text-decoration: none;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 1.15;
+        color: var(--dl-color-gray-black);
+        background-color: var(--dl-color-gray-white);
+      }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.5.0/lib/p5.js"></script>
     <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
@@ -24,40 +119,99 @@
       src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"
       crossorigin="anonymous"
     ></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
+    />
   </head>
+  <body>
+    <link rel="stylesheet" href="./style.css" />
+    <div>
+      <link href="./index.css" rel="stylesheet" />
 
-  <body class="container full-height-grow">
-    <header class="main-header">
-      <h1 class="title">Imaginair</h1>
-
-      {% if url %}
-      <script>
-        var url = "{{ url }}";
-      </script>
-      {% endif %}
-
-    </header>
-    <section class="home-main-section">
-      <div class="instructions">
-        <h2 class="subtitle">Instructions</h2>
-        <span>This is something that goes here</span>
-      </div>
-
-      <div id="main">
-        <div>
-          <script src="../static/sketch.js"></script>
-          <video class="input_video"></video>
-          <script src="../static/hand_track.js"></script>
+      <div class="home2-container">
+        <div class="home2-home2">
+          <div class="home2-title">
+            <span class="home2-text"><span>Imaginair</span></span>
+            <span class="home2-text02">Imaginair</span>
+          </div>
+          <div class="home2-instructions">
+            <span class="home2-text03"><span>Instructions</span></span>
+            <span class="home2-text05">
+              <span class="home2-text06">Just</span>
+              <span class="home2-text07">pinch</span>
+              <span class="home2-text08">
+                using your index and thumb to turn the drawing mode on and off.
+                Then, use the tip of your finger to draw anything you want. When
+                you’re ready, write a prompt and hit
+              </span>
+              <span class="home2-text09"></span>
+              <span class="home2-text10">Submit</span>
+              <span>to see the result of your creation.</span>
+            </span>
+          </div>
+          <div class="home2-left">
+            <video class="input_video home2-img"></video>
+            <div id="canvas" class="home2-img"></div>
+            <div class="home2-ui" id="ui-2"></div>
+            <div class="home2-prompt">
+              <div class="prompt home2-rectangle3" id="ui"></div>
+            </div>
+            <div id="submit-button"></div>
+            </button>
+          </div>
+          <div class="home2-right result">
+            <img alt="Result" src="" class="home2-rectangle1" id="filetag" />
+          </div>
         </div>
-
-        <div class="row" id="canvas"></div>
-        <div class="row" id="ui"></div>
-
-        <div id="result">
-          <img src="" alt="result-image" class="img-fluid" id="filetag" />
-        </div>
       </div>
-      <div id="ui-2"></div>
-    </section>
+    </div>
+    {% if url %}
+    <script>
+      var url = "{{ url }}";
+    </script>
+    {% endif %}
+    <script src="../static/sketch.js"></script>
+    <script src="../static/hand_track.js"></script>
   </body>
 </html>
