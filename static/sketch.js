@@ -110,7 +110,7 @@ let sketch = function (p) {
 
   p.setup = function () {
     p.frameRate(60);
-    p.c = p.createCanvas(600, 420);
+    p.c = p.createCanvas(600, 440);
     let canvasContainer = document.getElementById("canvas");
     let uiContainer = document.getElementById("ui");
     let submitButtonContainer = document.getElementById("submit-button")
@@ -132,7 +132,7 @@ let sketch = function (p) {
     p.saveButton.parent(submitButtonContainer);
     p.saveButton.addClass("home2-send-button");
 
-    p.handsButton = p.createButton("Show hand").mousePressed(showHands);
+    p.handsButton = p.createButton("Show").mousePressed(showHands);
     p.handsButton.parent(uiContainer2);
 
     //p.drawButton = p.createButton("Draw").mousePressed(p.startDrawing);
@@ -148,10 +148,10 @@ let sketch = function (p) {
     p.button.parent(uiContainer2);
 
     thresholdSlider1 = p.createSlider(0, 255, 127, 1);
-    thresholdSlider1.parent(uiContainer2);
+    //thresholdSlider1.parent(uiContainer2);
 
     thresholdSlider2 = p.createSlider(0, 255, 60, 1);
-    thresholdSlider2.parent(uiContainer2);
+    //thresholdSlider2.parent(uiContainer2);
 
     colorPicker = p.createColorPicker("#F27B50");
     colorPicker.parent(uiContainer2);

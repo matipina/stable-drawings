@@ -41,7 +41,7 @@ button {
   width: 100px;
   height: 40px;
   padding: .7rem 1.5rem;
-  border: none;
+  border: solid;
   border-radius: .5rem;
   color: #0D0D0D;
   background: #F2F2F2;
@@ -87,7 +87,13 @@ button:hover {
 }
 
 .prompt {
-  width: auto;
+  width: 100%;
 }
 
-
+input[type="color"] {
+  width: 100px;
+  height: 30px;
+  border: solid;
+  border-radius: .5rem;
+  justify-self: end;
+}

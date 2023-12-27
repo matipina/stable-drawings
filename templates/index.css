@@ -1,3 +1,9 @@
+img {
+  width:600px;
+  height:440px;
+  background: url(../assets/Rectangle.png) no-repeat scroll 0 0;
+}
+
 .home2-container {
   width: 100%;
   display: flex;
@@ -118,13 +124,14 @@
 }
 .home2-img {
   width: 600px;
-  height: 420px;
+  height: 440px;
 }
 .home2-ui {
   width: 600px;
-  height: 90px;
+  height: auto;
 }
 .home2-prompt {
+  padding-top: 10px;
   gap: 10px;
   display: flex;
   align-items: flex-start;
@@ -133,7 +140,7 @@
 }
 .home2-rectangle3 {
   width: 600px;
-  height: 53px;
+  height: auto;
   border-radius: 8px;
 }
 .home2-send-button {
@@ -168,7 +175,7 @@
   width: 600px;
   height: 420px;
 }
-@media(max-width: 1700px) {
+@media(max-width: 1600px) {
   .home2-home2 {
     gap: var(--dl-space-space-unit);
     width: 100%;
@@ -216,7 +223,7 @@
     align-self: flex-end;
   }
 }
-@media(max-width: 1600px) {
+@media(max-width: 800px) {
   .home2-home2 {
     padding-left: var(--dl-space-space-fiveunits);
     padding-right: var(--dl-space-space-fiveunits);
