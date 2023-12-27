@@ -1,7 +1,7 @@
 img {
   width:600px;
   height:440px;
-  background: url(../assets/Rectangle.png) no-repeat scroll 0 0;
+  background: url(./assets/Rectangle.png) no-repeat scroll 0 0;
 }
 
 .home2-container {
@@ -131,6 +131,7 @@ img {
   height: auto;
 }
 .home2-prompt {
+  width: 600px;
   padding-top: 10px;
   gap: 10px;
   display: flex;
