@@ -85,6 +85,15 @@ let sketch = function (p) {
   };
 
   p.saveImage = function () {
+    p.resultDiv = document.getElementsByClassName("result")[0];
+    p.spinnerDiv = p.createDiv('');
+    p.spinnerDiv.addClass('loading');
+    p.spinnerDiv.parent(p.resultDiv);
+
+    console.log('spinnerDiv: ');
+    console.log(p.spinnerDiv);
+
+    console.log('added loading class');
     let predictRoute;
     if (url) {
       p.print(`url: ${url}`);
@@ -97,6 +106,7 @@ let sketch = function (p) {
     let prompt = p.promptInput.value();
     let postData = imageData + " " + prompt;
     p.httpPost(predictRoute, "text", postData, function (result) {
+      p.spinnerDiv.remove();
       p.print("success on the post request! This is the result:");
       p.print("parsing...");
       var resultData = JSON.parse(result);

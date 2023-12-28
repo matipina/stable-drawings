@@ -163,8 +163,8 @@
       rel="stylesheet"
       href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
     />
-    <link href="style.css" rel="stylesheet" />
-    <link href="index.css" rel="stylesheet" />
+    <link href="/static/style.css" rel="stylesheet" />
+    <link href="/static/index.css" rel="stylesheet" />
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='index.css') }}">
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
   </head>
@@ -203,10 +203,8 @@
             </button>
           </div>
           <div class="home2-right result">
-            <object data="../static/assets/Rectangle.png" type="image/png">
-              <img alt="Result" src="" class="home2-rectangle1" id="filetag" />
-            </object>          
-            </div>
+              <img alt="" src="" class="home2-rectangle1" id="filetag" />
+          </div>
         </div>
       </div>
     </div>

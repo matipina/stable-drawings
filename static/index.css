@@ -255,6 +255,8 @@ img {
     align-self: center;
   }
   .home2-right {
+    position: relative;
+
     width: 500px;
     height: 593px;
     justify-content: flex-start;
