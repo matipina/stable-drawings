@@ -20,9 +20,7 @@ Imaginair explores a middle ground, focusing on **human-AI collaboration**. By r
 
 ## Live Demo
 
-You can try Imaginair live here: **[https://your-project-id.appspot.com](https://your-project-id.appspot.com)**
-
-*(Replace `your-project-id` with your actual Google Cloud Project ID)*
+You can try Imaginair live here: **[https://imaginair.uk.r.appspot.com/](https://imaginair.uk.r.appspot.com/)**
 
 ## Screenshot
 
@@ -43,7 +41,7 @@ To run this project on your local machine:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/stable-drawings.git # Replace with your repo URL
+    git clone https://github.com/matipina/stable-drawings.git # Replace with your repo URL
     cd stable-drawings
     ```
 2.  **Set up Python environment:**
@@ -65,8 +63,8 @@ To run this project on your local machine:
     ```bash
     python main.py
     ```
-6.  Open your browser to `http://127.0.0.1:5000` (or the port specified in the terminal).
+6.  Open your browser to `http://127.0.0.1:5001`.
 
 ---
 
-*Developed by [Your Name/Username]* <!-- Optional -->
+*Developed by Matías Piña*
