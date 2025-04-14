@@ -17,22 +17,17 @@ As generative AI transforms creative fields, the question of authorship often ar
 
 Imaginair explores a middle ground, focusing on **human-AI collaboration**. By requiring direct visual input through hand-tracked drawing alongside a text prompt, it gives the user significant control over fundamental artistic elements like composition and color. This process aims to make the interaction more tangible and the resulting artwork a true partnership between human intention and artificial intelligence.
 
-
 ## Live Demo
 
 You can try Imaginair live here: **[https://imaginair.uk.r.appspot.com/](https://imaginair.uk.r.appspot.com/)**
 
-## Screenshot
-
-![Imaginair Screenshot Placeholder](https://via.placeholder.com/800x450.png?text=Imaginair+App+Screenshot)
-
 ## Technology Stack
 
-*   **Frontend:** HTML, CSS, JavaScript, p5.js (for drawing canvas), Mediapipe Hands (for hand tracking)
-*   **Backend:** Python, Flask
-*   **Cloud Platform:** Google App Engine (Standard Environment)
-*   **Secrets Management:** Google Secret Manager (for API keys)
-*   **AI Model:** Hugging Face Inference API (Stable Diffusion models)
+* **Frontend:** HTML, CSS, JavaScript, p5.js (for drawing canvas), Mediapipe Hands (for hand tracking)
+* **Backend:** Python, Flask
+* **Cloud Platform:** Google App Engine (Standard Environment)
+* **Secrets Management:** Google Secret Manager (for API keys)
+* **AI Model:** Hugging Face Inference API (Stable Diffusion models)
 
 ## Running Locally (Optional)
 
