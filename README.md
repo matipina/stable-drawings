@@ -24,7 +24,6 @@ You can try Imaginair live here: **[https://imaginair.uk.r.appspot.com/](https:/
 
 ## Screenshot
 
-*(Consider adding a screenshot or GIF of the application in action here)*
 ![Imaginair Screenshot Placeholder](https://via.placeholder.com/800x450.png?text=Imaginair+App+Screenshot)
 
 ## Technology Stack
