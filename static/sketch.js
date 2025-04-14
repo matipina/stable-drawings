@@ -16,16 +16,14 @@
 let canvas;
 var video;
 var button;
-var thresholdSlider1;
-var thresholdSlider2;
 var shapeButton;
 let colorPicker;
 var paint;
 
-var vScale = 12;
+var vScale = 6;
 var shape = 0;
 var nShapes = 1;
-var nModes = 2;
+var nModes = 1;
 var mode = 1;
 var handStatus = true;
 var drawing = false;
@@ -86,36 +84,52 @@ let sketch = function (p) {
 
   p.saveImage = function () {
     p.resultDiv = document.getElementsByClassName("result")[0];
-    p.spinnerDiv = p.createDiv('');
-    p.spinnerDiv.addClass('loading');
+    p.spinnerDiv = p.createDiv("");
+    p.spinnerDiv.addClass("loading");
     p.spinnerDiv.parent(p.resultDiv);
 
-    console.log('spinnerDiv: ');
+    console.log("spinnerDiv: ");
     console.log(p.spinnerDiv);
 
-    console.log('added loading class');
-    let predictRoute;
-    if (url) {
-      p.print(`url: ${url}`);
-      predictRoute = url + "/predict";
-    } else {
-      predictRoute = "https://b123-35-227-181-39.ngrok.io/predict";
-    }
-    let imageData = p.c.elt.toDataURL();
-    // Send this prompt as data to unpack
-    let prompt = p.promptInput.value();
-    let postData = imageData + " " + prompt;
-    p.httpPost(predictRoute, "text", postData, function (result) {
-      p.spinnerDiv.remove();
-      p.print("success on the post request! This is the result:");
-      p.print("parsing...");
-      var resultData = JSON.parse(result);
-      p.print(`result format: ${resultData["format"]}`);
+    console.log("added loading class");
+    const predictRoute = "/predict";
 
-      var fileTag = document.getElementById("filetag");
-      fileTag.style.display = 'block';
-      fileTag.src = "data:image/png;base64," + resultData["img_data"];
-    });
+    let imageData = p.c.elt.toDataURL(); // Get base64 data URI
+    let prompt = p.promptInput.value();
+
+    // Create a JSON object payload
+    let payload = {
+      image: imageData,
+      prompt: prompt,
+    };
+
+    // Send the payload as JSON
+    p.httpPost(
+      predictRoute,
+      "json",
+      payload,
+      function (result) {
+        // Sending as 'json'
+        p.spinnerDiv.remove();
+        p.print("success on the post request! This is the result:");
+        p.print(`result format: ${result["format"]}`); // Access result as an object
+
+        var fileTag = document.getElementById("filetag");
+        fileTag.style.display = "block";
+        fileTag.src = result["img_data"]; // Access img_data directly
+      },
+      function (error) {
+        // Handle network errors or non-2xx responses from the server
+        console.error("Error during httpPost:", error);
+        if (p.spinnerDiv) {
+          // Make sure spinnerDiv exists before removing
+          p.spinnerDiv.remove();
+        }
+        alert(
+          "Failed to generate image. Please check the console for details."
+        );
+      }
+    );
   };
 
   p.setup = function () {
@@ -123,7 +137,7 @@ let sketch = function (p) {
     p.c = p.createCanvas(600, 440);
     let canvasContainer = document.getElementById("canvas");
     let uiContainer = document.getElementById("ui");
-    let submitButtonContainer = document.getElementById("submit-button")
+    let submitButtonContainer = document.getElementById("submit-button");
     let uiContainer2 = document.getElementById("ui-2");
 
     p.c.parent(canvasContainer);
@@ -142,26 +156,14 @@ let sketch = function (p) {
     p.saveButton.parent(submitButtonContainer);
     p.saveButton.addClass("home2-send-button");
 
-    p.handsButton = p.createButton("Show").mousePressed(showHands);
+    p.handsButton = p.createButton("Show hands").mousePressed(showHands);
     p.handsButton.parent(uiContainer2);
 
-    //p.drawButton = p.createButton("Draw").mousePressed(p.startDrawing);
-    //p.drawButton.parent(uiContainer);
-
-    //p.eraseButton = p.createButton("Eraser").mousePressed(p.startErasing);
-    //p.eraseButton.parent(uiContainer);
-
-    p.cleanButton = p.createButton("Clean").mousePressed(p.erasePixels);
+    p.cleanButton = p.createButton("Erase").mousePressed(p.erasePixels);
     p.cleanButton.parent(uiContainer2);
 
-    p.button = p.createButton("Mode", 0).mousePressed(changeMode);
+    p.button = p.createButton("Camera").mousePressed(changeMode);
     p.button.parent(uiContainer2);
-
-    thresholdSlider1 = p.createSlider(0, 255, 127, 1);
-    //thresholdSlider1.parent(uiContainer2);
-
-    thresholdSlider2 = p.createSlider(0, 255, 60, 1);
-    //thresholdSlider2.parent(uiContainer2);
 
     colorPicker = p.createColorPicker("#F27B50");
     colorPicker.parent(uiContainer2);
@@ -230,26 +232,8 @@ let sketch = function (p) {
           var g = video.pixels[index + 1];
           var b = video.pixels[index + 2];
 
-          var bright = (r + g + b) / 3;
-          var threshold1 = thresholdSlider1.value();
-          var threshold2 = thresholdSlider2.value();
-
           if (mode == 1) {
             p.fill(r, g, b);
-            p.drawShape(
-              shape,
-              x * vScale + vScale,
-              y * vScale + vScale / 2,
-              vScale
-            );
-          } else if (mode == 2) {
-            if (bright > threshold1) {
-              p.fill(255);
-            } else if (bright > threshold2) {
-              p.fill(170);
-            } else {
-              p.fill(0);
-            }
             p.drawShape(
               shape,
               x * vScale + vScale,

@@ -1,0 +1,207 @@
+/* static/styles/main.css */
+
+/* Basic Reset & Body */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+      "Helvetica Neue", sans-serif;
+    line-height: 1.6;
+    color: #333; /* Dark grey text */
+    background-color: #f9f9f9; /* Light grey background */
+    padding-bottom: 2rem; /* Add some space at the bottom */
+  }
+  
+  /* Main Content Container */
+  .container {
+    max-width: 1300px; /* Max width */
+    margin: 0 auto; /* Center */
+    padding: 1rem 1.5rem; /* Padding */
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    text-align: center;
+    color: #111;
+  }
+  
+  h2 {
+    font-size: 1.1rem; /* Slightly smaller than sample */
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: #444;
+  }
+  
+  .instructions {
+      background-color: #eee;
+      padding: 0.75rem 1rem;
+      border-radius: 0.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #555;
+  }
+  
+  /* Layout for Drawing and Result Areas */
+  .app-layout {
+    display: flex;
+    flex-direction: column; /* Stack on mobile */
+    gap: 1.5rem; /* Space between columns */
+  }
+  
+  /* Apply row layout on medium screens and up */
+  @media (min-width: 768px) {
+    .app-layout {
+      flex-direction: row;
+    }
+  }
+  
+  .canvas-wrapper {
+    flex: 1; /* Each column takes equal space */
+    min-width: 0; /* Prevent overflow */
+  }
+  
+  /* Container for the actual canvas/image */
+  .canvas-box, .result-image-container {
+    position: relative; /* Needed for absolute positioning inside (like spinner) */
+    overflow: hidden; /* Hide anything outside */
+    border-radius: 0.5rem; /* Rounded corners */
+    border: 1px solid #ddd; /* Light border */
+    background-color: #fff; /* White background */
+    /* Maintain aspect ratio */
+    width: 100%;
+    aspect-ratio: 600 / 440; /* Adjust if your canvas size is different */
+  }
+  
+  /* Styling for the p5 canvas element itself */
+  #canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain; /* Scale content within bounds */
+  }
+  
+  /* Styling for the result image */
+  #filetag {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Scale image nicely */
+  }
+  
+  /* Video element (hidden by JS, but keep for mediapipe) */
+  .input_video {
+    display: none;
+  }
+  
+  /* Controls Area (Show Hand, Clean, Mode, Color) */
+  .controls {
+    display: flex;
+    flex-wrap: wrap; /* Allow items to wrap */
+    gap: 0.75rem; /* Space between controls */
+    margin-top: 1.5rem;
+    align-items: center; /* Align items vertically */
+    padding-bottom: 0.75rem; /* Space before prompt */
+  }
+  
+  /* Style elements attached by p5.js inside #ui-2 */
+  #ui-2 button {
+    padding: 0.5rem 1rem;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+  
+  #ui-2 button:hover {
+    background-color: #e5e5e5;
+  }
+  
+  /* Style color picker attached by p5.js inside #ui-2 */
+  #ui-2 input[type="color"] {
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid #ddd; /* Add border to match buttons */
+    border-radius: 0.25rem;
+    cursor: pointer;
+    padding: 2px; /* Small padding */
+    background-color: #f1f1f1; /* Match button background */
+    vertical-align: middle; /* Align with buttons */
+  }
+  
+  /* Prompt Area (Input + Submit Button) */
+  .prompt-container {
+    display: flex;
+    gap: 0.5rem; /* Space between input and button */
+    margin-top: 0.75rem; /* Space above prompt area */
+  }
+  
+  /* Style prompt input attached by p5.js inside #ui */
+  #ui input[type="text"] {
+    flex: 1; /* Take remaining space */
+    padding: 0.6rem; /* Slightly more padding */
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    font-size: 0.9rem; /* Slightly larger font */
+  }
+  
+  #ui input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff; /* Highlight on focus */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* Subtle glow */
+  }
+  
+  /* Style submit button attached by p5.js inside #submit-button */
+  #submit-button button {
+    padding: 0.6rem 1.2rem; /* Match input padding */
+    background-color: #007bff; /* Primary button color */
+    color: white;
+    border: 1px solid #007bff;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    white-space: nowrap;
+  }
+  
+  #submit-button button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    border-color: #0056b3;
+  }
+  
+  /* Loading Spinner using aria-busy */
+  .result-image-container[aria-busy="true"]::before {
+      content: "";
+      box-sizing: border-box;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 40px; /* Adjust size */
+      height: 40px;
+      margin-top: -20px; /* Half of height */
+      margin-left: -20px; /* Half of width */
+      border-radius: 50%;
+      border: 3px solid #ccc; /* Light border */
+      border-top-color: #007bff; /* Spinner color */
+      animation: spinner .6s linear infinite;
+      z-index: 10;
+  }
+  
+  @keyframes spinner {
+      to {transform: rotate(360deg);}
+  }
+  
+  /* Hide the image while loading */
+  .result-image-container[aria-busy="true"] > #filetag {
+      visibility: hidden;
+  }
+  

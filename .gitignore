@@ -1,1 +1,26 @@
-vscode/
+# Python runtime files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+*.venv
+env/
+ENV/
+
+# Secrets file
+.env
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE config directories
+.idea/
+.vscode/
+
+# Optional: Build artifacts or logs if you generate any
+/dist/
+/build/
+*.log
