@@ -5,7 +5,7 @@ import base64
 import re
 from flask import Flask, render_template, request, jsonify
 from PIL import Image
-from huggingface_hub import InferenceClient
+from huggingface_hub import InferenceClient, HfApi, list_models
 from google.cloud import secretmanager
 from dotenv import load_dotenv
 
@@ -28,7 +28,7 @@ def get_huggingface_token():
     secret_id = "huggingface-api-token"
     version_id = "latest"
 
-    # Attempt to get project ID from environment 
+    # Attempt to get project ID from environment
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
     if not project_id:
         # Fallback: Try to get it from gcloud config if running locally for testing
@@ -38,13 +38,14 @@ def get_huggingface_token():
                 ["gcloud", "config", "get-value", "project"], text=True
             ).strip()
         except Exception:
-             print("Warning: GOOGLE_CLOUD_PROJECT env var not set and gcloud project not found.")
-             # Handle error appropriately - maybe return None or raise Exception
-             return None # Or raise an exception
+            print(
+                "Warning: GOOGLE_CLOUD_PROJECT env var not set and gcloud project not found.")
+            # Handle error appropriately - maybe return None or raise Exception
+            return None  # Or raise an exception
 
     if not project_id:
-         print("Error: Could not determine Google Cloud project ID.")
-         return None
+        print("Error: Could not determine Google Cloud project ID.")
+        return None
 
     try:
         # Create the Secret Manager client
@@ -58,12 +59,10 @@ def get_huggingface_token():
 
         # Decode the secret payload
         token = response.payload.data.decode("UTF-8")
-        # print("Successfully fetched Hugging Face token from Secret Manager.") # Optional debug log
         return token
 
     except Exception as e:
         print(f"Error fetching secret '{secret_id}' from Secret Manager: {e}")
-        # Consider raising the exception or returning None based on how you want to handle failure
         return None
 
 
@@ -115,7 +114,7 @@ def generate_image_hf_api(img_pil, prompt):
             prompt=prompt,
             model=HF_MODEL_ID,
             guidance_scale=1,
-            num_inference_steps=100,
+            num_inference_steps=10,
             negative_prompt="text, watermark, lowres, low quality, worst quality, deformed, glitch, low contrast, noisy, saturation, blurry",
         )
 
@@ -181,9 +180,7 @@ def predict():
         'img_data': result_base64  # Includes data URI prefix
     })
 
-# --- Main Execution ---
 
 
 if __name__ == '__main__':
-    # Runs the Flask development server locally
     app.run(debug=True, host='0.0.0.0', port=5001)

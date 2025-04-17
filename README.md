@@ -59,6 +59,9 @@ To run this project on your local machine:
     ```
 6.  Open your browser to `http://127.0.0.1:5001`.
 
----
+## Dev commands
+
+* `gcloud app deploy`
+* `gcloud app browse`
 
 *Developed by Matías Piña*
