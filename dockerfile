@@ -7,7 +7,7 @@ FROM nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04
 # Prevent interactive prompts during package installation
 ENV DEBIAN_FRONTEND=noninteractive
 # Ensure UTF-8 locale to prevent potential issues with Python/Gunicorn
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 
 # 2. Install Python and pip
 # Using Python 3.11 as it's well-supported with recent libraries
@@ -32,7 +32,7 @@ COPY requirements.txt .
 # 5. Install Python dependencies using the correct PyTorch index for CUDA 12.1
 # (Compatible with CUDA 12.2 drivers)
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt --index-url https://download.pytorch.org/whl/cu121
+    pip install --no-cache-dir -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu121
 
 # 6. Copy the rest of the application code into the container
 COPY . .

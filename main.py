@@ -5,9 +5,12 @@ import base64
 import re
 from flask import Flask, render_template, request, jsonify
 from PIL import Image
-from huggingface_hub import InferenceClient, HfApi, list_models
 from google.cloud import secretmanager
 from dotenv import load_dotenv
+import logging
+
+import fireworks.client
+from fireworks.client.image import ImageInference, Answer
 
 
 load_dotenv()
@@ -17,52 +20,42 @@ app = Flask(__name__,
             template_folder='templates',
             static_folder='static')
 
-# Define the Hugging Face model ID to use
-HF_MODEL_ID = "stabilityai/stable-diffusion-xl-refiner-1.0"
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
 
 # --- Helper Functions ---
-
-
-def get_huggingface_token():
-    """Fetches the Hugging Face token from Google Secret Manager."""
-    secret_id = "huggingface-api-token"
+def get_fireworks_api_key():
+    """Fetches the Fireworks AI API key from Google Secret Manager."""
+    secret_id = "fireworks-api-key"
     version_id = "latest"
-
-    # Attempt to get project ID from environment
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+
     if not project_id:
-        # Fallback: Try to get it from gcloud config if running locally for testing
+        # Try getting from gcloud config (useful for local testing after ADC login)
         try:
             import subprocess
             project_id = subprocess.check_output(
                 ["gcloud", "config", "get-value", "project"], text=True
             ).strip()
+            logging.info(f"Determined Project ID from gcloud config: {project_id}")
         except Exception:
-            print(
-                "Warning: GOOGLE_CLOUD_PROJECT env var not set and gcloud project not found.")
-            # Handle error appropriately - maybe return None or raise Exception
-            return None  # Or raise an exception
+            logging.error("GOOGLE_CLOUD_PROJECT env var not set and gcloud project not found.")
+            return None
 
     if not project_id:
-        print("Error: Could not determine Google Cloud project ID.")
-        return None
+         logging.error("Could not determine Google Cloud project ID.")
+         return None
 
     try:
-        # Create the Secret Manager client
         client = secretmanager.SecretManagerServiceClient()
-
-        # Build the resource name of the secret version
         name = f"projects/{project_id}/secrets/{secret_id}/versions/{version_id}"
-
-        # Access the secret version
         response = client.access_secret_version(request={"name": name})
-
-        # Decode the secret payload
         token = response.payload.data.decode("UTF-8")
+        logging.info("Successfully fetched Fireworks AI API key.")
         return token
-
     except Exception as e:
-        print(f"Error fetching secret '{secret_id}' from Secret Manager: {e}")
+        logging.error(f"Error fetching secret '{secret_id}': {e}", exc_info=True)
         return None
 
 
@@ -87,56 +80,50 @@ def pil_to_base64(pil_image, format="PNG"):
     return f"data:image/{format.lower()};base64,{img_str}"
 
 
-def generate_image_hf_api(img_pil, prompt):
-    """Generates an image using Hugging Face InferenceClient (img2img refiner)."""
-    hf_token = get_huggingface_token()
-    if not hf_token:
-        print("Error: Missing Hugging Face Token")
+# --- Image Generation Function ---
+def generate_image_fireworks_api(img_pil, prompt, steps=30, cfg_scale=7.0, seed=0):
+    """Generates an image using the Fireworks AI ImageInference client."""
+    api_key = get_fireworks_api_key()
+    if not api_key:
+        logging.error("Cannot generate image: Fireworks API key not available.")
         return None
 
     try:
-        print(f"Initializing InferenceClient for model: {HF_MODEL_ID}")
-        # Instantiate the client within the function for simplicity
-        client = InferenceClient(token=hf_token)
+        # Set the API key for the client library
+        fireworks.client.api_key = api_key
 
-        # Convert input PIL image to bytes (client might prefer bytes)
-        buffer = io.BytesIO()
-        img_format = "PNG"
-        img_pil.save(buffer, format=img_format)
-        img_bytes = buffer.getvalue()
-        print(
-            f"Sending prompt '{prompt}' and {len(img_bytes)} image bytes to client.")
+        # Initialize the client for the specific model
+        inference_client = ImageInference(model="SSD-1B")
 
-        # Make the call using the client's image_to_image method
-        # The client handles the underlying API request structure
-        result_image = client.image_to_image(
-            image=img_bytes,  # Pass image bytes
+        # Call the image_to_image method
+        # Pass the PIL image object directly to 'init_image'
+        answer: Answer = inference_client.image_to_image(
+            init_image=img_pil, # Pass PIL image object
             prompt=prompt,
-            model=HF_MODEL_ID,
-            guidance_scale=1,
-            num_inference_steps=10,
-            negative_prompt="text, watermark, lowres, low quality, worst quality, deformed, glitch, low contrast, noisy, saturation, blurry",
+            cfg_scale=cfg_scale, # Mapped from guidance_scale
+            # sampler=None, # Use default sampler
+            steps=steps, # Mapped from num_inference_steps
+            seed=seed,
+            safety_check=False, # Or True if desired
+            output_image_format="PNG", # Request PNG output,
+            init_image_mode="IMAGE_STRENGTH", # Common mode for img2img
+            image_strength=0.3
         )
 
-        # result_image should be a PIL Image object if successful
-        if isinstance(result_image, Image.Image):
-            print("Successfully received PIL Image from InferenceClient.")
-            # Ensure RGB if needed (though client likely handles this)
-            if result_image.mode != "RGB":
-                result_image = result_image.convert("RGB")
-            return result_image
-        else:
-            print(
-                f"InferenceClient returned unexpected type: {type(result_image)}")
+        # Check the result
+        if answer.image is None:
+            logging.error(f"Fireworks API failed: {answer.finish_reason}")
             return None
+        else:
+            logging.info(f"Image generation successful (finish reason: {answer.finish_reason}).")
+            # answer.image is already a PIL Image object
+            return answer.image
 
     except Exception as e:
-        # Catch potential errors from the client library or API interaction
-        print(f"Error using InferenceClient: {e}")
+        logging.error(f"Error during Fireworks API call or processing: {e}", exc_info=True)
         return None
-
-
 # --- Flask Routes ---
+
 
 @app.route("/")
 def home():
@@ -147,6 +134,8 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     """Receives drawing data and prompt, returns generated image."""
+    # No model loading check needed anymore
+
     if not request.is_json:
         return jsonify({"msg": "error", "detail": "Request must be JSON"}), 400
 
@@ -161,26 +150,25 @@ def predict():
     if img_pil is None:
         return jsonify({"msg": "error", "detail": "Failed to process input image"}), 400
 
-    # Use a default prompt if none provided by user
     if not prompt:
-        prompt = 'Imagine a beautiful scene that follows the composition of this image, but with a lot of creative freedom.'
+        prompt = 'A beautiful artwork based on the sketch, high quality, detailed' # Generic prompt
 
-    # Call the generation function using HF InferenceClient
-    print(f'prompt: {prompt}')
-    result_pil = generate_image_hf_api(img_pil, prompt)
+    # Call the Fireworks API generation function
+    # Adjust parameters like steps, cfg_scale as needed
+    result_pil = generate_image_fireworks_api(img_pil, prompt, steps=30, cfg_scale=7.0)
 
     if result_pil is None:
-        return jsonify({"msg": "error", "detail": "Image generation failed"}), 500
+        return jsonify({"msg": "error", "detail": "Image generation failed on server"}), 500
 
     # Convert the result PIL image back to base64 to send to frontend
     result_base64 = pil_to_base64(result_pil, format="PNG")
 
     return jsonify({
         'msg': 'success',
-        'img_data': result_base64  # Includes data URI prefix
+        'img_data': result_base64
     })
 
 
-
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=False, host='0.0.0.0',
+            port=int(os.environ.get("PORT", 5001)))
