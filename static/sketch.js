@@ -1,18 +1,3 @@
-/* to dos:
-1. Fix margins
-2. Change video size and add slider to change vScale/add mode to show only video
-3. Implement drawing
-    - ideas: 
-        add a setting 'duration' that determines for how long the painting stays (control with slider)
-        add a sensibility setting, so a pixel is painted only after a few seconds of keeping the index there
-        add a 'move pixels' option, where you can paint/select a bunch of pixels and then move the selection around
-
-4. Take photo and then allow to paint over it
-5. Add interactivity mode where pixels fall?/do something
-6. Add paint bucket
-7. Add mode that doesn't have margins in between pixels
-*/
-
 let canvas;
 var video;
 var button;
@@ -88,10 +73,6 @@ let sketch = function (p) {
     p.spinnerDiv.addClass("loading");
     p.spinnerDiv.parent(p.resultDiv);
 
-    console.log("spinnerDiv: ");
-    console.log(p.spinnerDiv);
-
-    console.log("added loading class");
     const predictRoute = "/predict";
 
     let imageData = p.c.elt.toDataURL(); // Get base64 data URI
@@ -204,9 +185,9 @@ let sketch = function (p) {
           });
           p.history.push({
             action: "erase",
-            x: x_ * vScale + vScale,
-            y: y_ * vScale + vScale / 2,
-            color: 20,
+            x: selectedX,
+            y: selectedY,
+            color: 255,
           });
         }
       }
@@ -214,7 +195,7 @@ let sketch = function (p) {
   };
 
   p.draw = function () {
-    p.background(20);
+    p.background(255);
     paint = colorPicker.color();
 
     p.push();
@@ -353,7 +334,6 @@ let sketch = function (p) {
             if (pinchDistance < drawMinDistance) {
               p.startDrawing();
               justChangedDraw = true;
-              console.log("CHANGE!");
             }
           } else {
             if (pinchDistance > drawMinDistance) {
@@ -365,7 +345,6 @@ let sketch = function (p) {
             if (middleDistance < drawMinDistance) {
               p.startErasing();
               justChangedErase = true;
-              console.log("ERASE!");
             }
           } else {
             if (middleDistance > drawMinDistance) {
