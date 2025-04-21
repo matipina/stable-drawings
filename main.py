@@ -81,7 +81,7 @@ def pil_to_base64(pil_image, format="PNG"):
 
 
 # --- Image Generation Function ---
-def generate_image_fireworks_api(img_pil, prompt, steps=30, cfg_scale=7.0, seed=0):
+def generate_image_fireworks_api(img_pil, prompt, steps=30, cfg_scale=9.0, seed=0):
     """Generates an image using the Fireworks AI ImageInference client."""
     api_key = get_fireworks_api_key()
     if not api_key:
@@ -107,7 +107,7 @@ def generate_image_fireworks_api(img_pil, prompt, steps=30, cfg_scale=7.0, seed=
             safety_check=False, # Or True if desired
             output_image_format="PNG", # Request PNG output,
             init_image_mode="IMAGE_STRENGTH", # Common mode for img2img
-            image_strength=0.3
+            image_strength=0.44
         )
 
         # Check the result
@@ -155,7 +155,7 @@ def predict():
 
     # Call the Fireworks API generation function
     # Adjust parameters like steps, cfg_scale as needed
-    result_pil = generate_image_fireworks_api(img_pil, prompt, steps=30, cfg_scale=7.0)
+    result_pil = generate_image_fireworks_api(img_pil, prompt, steps=33, cfg_scale=8.0)
 
     if result_pil is None:
         return jsonify({"msg": "error", "detail": "Image generation failed on server"}), 500
